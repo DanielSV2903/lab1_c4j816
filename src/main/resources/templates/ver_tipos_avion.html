@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tipos de Aeronave Disponibles</title>
+    <link rel="stylesheet" th:href="@{/ver_tipos_avion.css}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Catálogo de Tipos de Aeronaves</h1>
+        <p class="subtitle">Haga clic sobre cualquier campo para consultar las aeronaves registradas bajo ese modelo.</p>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Código Tipo</th>
+                    <th>Identificador</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="tipo : ${tiposAvion}">
+                    <td>
+                        <a th:href="@{/mostrar_aviones(idTipo=${tipo.typeId})}" 
+                           th:text="${tipo.typeId}">
+                        </a>
+                    </td>
+
+                    <td>
+                        <a th:href="@{/mostrar_aviones(idTipo=${tipo.typeId})}" 
+                           th:text="${tipo.identifier}">
+                        </a>
+                    </td>
+
+                    <td>
+                        <a th:href="@{/mostrar_aviones(idTipo=${tipo.typeId})}" 
+                           th:text="${tipo.description}">
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

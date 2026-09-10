@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aeronaves Asociadas</title>
+    <link rel="stylesheet" th:href="@{/mostrar_aviones.css}">
+</head>
+
+<body>
+    <div class="container">
+        
+        <header class="detail-header">
+            <h1>Tipo de Avión: <span th:text="${tipoAvion != null ? tipoAvion.identifier : 'No especificado'}"></span></h1>
+            <a th:href="@{/ver_tipos_avion}" class="btn-regresar">&larr; Otra Consulta</a> 
+        </header>
+
+        <div class="empty-message" th:if="${#lists.isEmpty(aviones)}">
+            <p>El tipo de avión seleccionado no tiene aeronaves asociadas.</p>
+        </div>
+
+        <table class="styled-table" th:if="${not #lists.isEmpty(aviones)}">
+            <thead>
+                <tr>
+                    <th>ID Aeronave</th>
+                    <th>Capacidad de Pasajeros</th>
+                    <th>Nombre de la Aerolínea</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="avion : ${aviones}"
+                    th:classappend="${avionStat.even} ? 'fila-par' : 'fila-impar'">
+                    <td th:text="${avion.airplaneId}"></td>
+                    <td th:text="${avion.capacity}"></td>
+                    <td th:text="${avion.airline != null ? avion.airline.airlineName : 'Sin aerolínea asignada'}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
