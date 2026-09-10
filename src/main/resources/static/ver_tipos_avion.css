@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #f4f6f9;
+    background-color: #7fb2fd;
     color: #333333;
     display: flex;
     justify-content: center;
@@ -46,15 +46,20 @@ h1 {
     background-color: #0f172a;
     color: #ffffff;
     font-weight: 600;
-    text-align: left;
+    text-align: center;
     padding: 14px 16px;
     font-size: 0.95rem;
+    border-radius: 16px;
+    overflow: hidden;
 }
 
 .styled-table td {
     padding: 12px 16px;
     border-bottom: 1px solid #e2e8f0;
     font-size: 0.9rem;
+    border-radius: 16px;
+    overflow: hidden;
+    text-align: center;
 }
 
 .styled-table tbody tr:nth-of-type(even) {
@@ -62,7 +67,7 @@ h1 {
 }
 
 .styled-table tbody tr:hover {
-    background-color: #e2e8f0;
+    background-color: #91ffe4;
 }
 
 .styled-table a {

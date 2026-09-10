@@ -61,7 +61,7 @@ public void linkAirlines(List<Airplane> planes){
 if (planes == null || planes.isEmpty()) {
         return;
     }
-    List<Airline> airlines=airlineData.findAllAirlines();
+    List<Airline> airlines=airlineData.findAll();
     for(Airplane airplane:planes){
         for(Airline airline:airlines){
             if (airplane.getAirline().getAirlineId()==airline.getAirlineId()) {

@@ -18,7 +18,7 @@ public class AirlineData {
     @Autowired 
     private JdbcTemplate jdbcTemplate;
 
-    public List<Airline> findAllAirlines(){
+    public List<Airline> findAll(){
         String query="""
                 SELECT * FROM airline
                 """;
