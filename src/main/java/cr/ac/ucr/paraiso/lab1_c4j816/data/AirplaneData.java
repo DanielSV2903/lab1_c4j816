@@ -21,14 +21,15 @@ public class AirplaneData {
     JdbcTemplate jdbcTemplate;
     @Autowired
     AirplaneTypeData airplaneTypeData;
-    @Autowired 
+    @Autowired
     AirlineData airlineData;
 
     public List<Airplane> findAirplanesByTypeId(int typeId) {
         String query = """
-                    SELECT a.airplane_id, a.capacity, a.airline_id, a.type_id
+                    SELECT a.airplane_id, a.capacity, a.airline_id, a.type_id, al.iata, al.airlinename,at.typename
                     FROM airplane a
                     INNER JOIN airplane_type at ON a.type_id = at.type_id
+                    LEFT JOIN airline al ON a.airline_id = al.airline_id
                     WHERE a.type_id = ?
                 """;
         List<Airplane> planes = jdbcTemplate.query(query, new AirplaneExtractor(), typeId);
@@ -38,39 +39,40 @@ public class AirplaneData {
     }
 
     private void linkAirplaneTypes(List<Airplane> planes) {
-       //Verifico si la lista esta vacia 
-    if (planes == null || planes.isEmpty()) {
-        return;
-    }
-    List<AirplaneType> types = airplaneTypeData.findAll();
-    int targetTypeId = planes.getFirst().getType().getTypeId();
-    AirplaneType matchedType = null;
-    for (AirplaneType t : types) {
-        if (t.getTypeId() == targetTypeId) {
-            matchedType = t;
-            break;//sale de la busqueda al encontrar match
+        // Verifico si la lista esta vacia
+        if (planes == null || planes.isEmpty()) {
+            return;
         }
-    }
-    if (matchedType != null) {
-        for (Airplane p : planes) {
-            p.setType(matchedType);
+        List<AirplaneType> types = airplaneTypeData.findAll();
+        int targetTypeId = planes.getFirst().getType().getTypeId();
+        AirplaneType matchedType = null;
+        for (AirplaneType t : types) {
+            if (t.getTypeId() == targetTypeId) {
+                matchedType = t;
+                break;// sale de la busqueda al encontrar match
+            }
         }
-    }
-}
-public void linkAirlines(List<Airplane> planes){
-if (planes == null || planes.isEmpty()) {
-        return;
-    }
-    List<Airline> airlines=airlineData.findAll();
-    for(Airplane airplane:planes){
-        for(Airline airline:airlines){
-            if (airplane.getAirline().getAirlineId()==airline.getAirlineId()) {
-                airplane.setAirline(airline);                
+        if (matchedType != null) {
+            for (Airplane p : planes) {
+                p.setType(matchedType);
             }
         }
     }
 
-}
+    public void linkAirlines(List<Airplane> planes) {
+        if (planes == null || planes.isEmpty()) {
+            return;
+        }
+        List<Airline> airlines = airlineData.findAll();
+        for (Airplane airplane : planes) {
+            for (Airline airline : airlines) {
+                if (airplane.getAirline().getAirlineId() == airline.getAirlineId()) {
+                    airplane.setAirline(airline);
+                }
+            }
+        }
+
+    }
 }
 
 class AirplaneExtractor implements ResultSetExtractor<List<Airplane>> {
@@ -83,7 +85,7 @@ class AirplaneExtractor implements ResultSetExtractor<List<Airplane>> {
             plane.setAirplaneId(rs.getInt("airplane_id"));
             plane.setCapacity(rs.getInt("capacity"));
             AirplaneType type = new AirplaneType();
-            Airline airline=new Airline();
+            Airline airline = new Airline();
             type.setTypeId(rs.getInt("type_id"));
             airline.setAirlineId(rs.getInt("airline_id"));
             plane.setType(type);
